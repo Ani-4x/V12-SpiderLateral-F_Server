@@ -1,5 +1,6 @@
 import { application } from 'express';
 import bcrypt from 'bcrypt';
+import redis from 'redis'
 
 import User from '../user-model/User.js';
 import Message from '../user-model/Message.js';
@@ -74,21 +75,72 @@ export const Users = async (req, res) => {
   }
 };
 
-//send message
-export const SendMessage = async (req, res) => {
-  const { senderId , receiverId, message} = req.body;
+// //send message
+// export const SendMessage = async (req, res) => {
+//   const { senderId , receiverId, message} = req.body;
   
   
-  try {
-    const newMessage = new Message({  senderId , receiverId, message });
-    await newMessage.save();
-    res.json(newMessage);
-  } catch (error) {
-    console.error("Error saving message:", error);
-    res.json({ error: "Failed to save message" });
-  }
-};
+//   try {
+//     const newMessage = new Message({  senderId , receiverId, message });
+//     await newMessage.save();
+//     res.json(newMessage);
+//   } catch (error) {
+//     console.error("Error saving message:", error);
+//     res.json({ error: "Failed to save message" });
+//   }
+// };
 
 
-  
+// //get message 
+
+// const client = redis.createClient();
+
+// client.connect().catch((err) => {
+//   console.error('Failed to connect to Redis:', err);
+// });
+
+// client.on('error', (err) => {
+//   console.error('Redis error:', err);
+// });
+
+
+// export const fetchMessages = async (req, res) => {
+//   try {
+//       const { senderId, receiverId , message } = req.query;
+
+//       if (!senderId || !receiverId) {
+//           return res.status(400).json({ error: 'SenderId and ReceiverId are required.' });
+//       }
+
+//       const cacheKey = `messages:${senderId}:${receiverId}:${message}`;
+
+//       // Check Redis cache
+//       client.get(cacheKey, async (err, cachedMessages) => {
+//           if (err) throw err;
+
+//           if (cachedMessages) {
+//               // Return cached messages
+//               return res.json({ success: true, messages: JSON.parse(cachedMessages) });
+//           } else {
+//               // Fetch messages from MongoDB
+//               const messages = await Message.find({
+//                   $or: [
+//                       { senderId, receiverId , message },
+//                       { senderId: receiverId, receiverId: senderId }
+//                   ]
+//               }).sort({ createdAt: 1 });
+
+//               // Cache messages in Redis
+//               client.set(cacheKey, 3600, JSON.stringify(message));
+              
+
+//               res.json({ success: true, message });
+//               console.log(message)
+//           }
+//       });
+//   } catch (error) {
+//       console.error('Error fetching messages:', error);
+//       res.status(500).json({ success: false, error: 'Internal Server Error' });
+
+//   }};
 

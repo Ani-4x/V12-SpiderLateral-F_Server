@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {  Login , SendMessage, Signup, Users} from '../constroller/User-controller.js';
+import {   Login ,Signup, Users} from '../constroller/User-controller.js';
 
 
 const  Route = express.Router();
@@ -11,8 +11,9 @@ Route.get('/users' , Users)
 
 Route.post('/Signup', Signup)
 
-Route.post('/SendMessage', SendMessage)
+// Route.post('/SendMessage', SendMessage)
 
+// Route.get('/fetchMessages' , fetchMessages)
 
 
 
